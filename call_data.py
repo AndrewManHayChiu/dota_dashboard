@@ -33,6 +33,9 @@ df
 
 df.to_csv('data/data.csv')
 
+
+
+
 def get_matches(account_id):
     
     url = host_name + 'players/' + account_id + '/matches/' + api_key
@@ -42,11 +45,21 @@ def get_matches(account_id):
     df = pd.DataFrame(data)
     
     return(df)
+
+df = get_matches(account_id='208812212')
+df_new = get_matches(account_id='208812212')
+
+df.shape
+df_new.shape
+
+df
+df_new
+
+def update_data():
     
-get_matches(account_id='208812212')
 
 # def save_data(file_name):
     
 
-# def update_data():
+
     

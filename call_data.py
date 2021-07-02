@@ -35,7 +35,7 @@ df.to_csv('data/data.csv')
 
 def get_matches(account_id):
     
-    url = host_name + 'players/' + account_id + '/matches/' + api_key
+    url = host_name + 'players/' + str(account_id) + '/matches/' + api_key
     
     response = requests.get(url)
     data = json.loads(response.text)
@@ -43,7 +43,19 @@ def get_matches(account_id):
     
     return(df)
     
-get_matches(account_id='208812212')
+get_matches(account_id=208812212)
+
+def get_match(match_id):
+    
+    url = host_name + 'matches/' + str(match_id) + api_key
+    
+    response = requests.get(url)
+    data = json.loads(response.text)
+    # df = pd.DataFrame(data)
+    
+    return pd.DataFrame(data)
+
+get_match(6064493671)
 
 # def save_data(file_name):
     

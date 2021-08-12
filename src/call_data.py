@@ -3,6 +3,8 @@ import json
 import pandas as pd
 import numpy as np
 
+player_ids = pd.read_csv('../data/player_ids.csv')
+
 api_key = '?api_key=' + key
 
 end_path = 'players/208812212/'
@@ -54,8 +56,7 @@ def get_player_matches(account_id, api_key=api_key):
         + '/matches/' \
         + '?api_key=' \
         + api_key \
-        + '?game_mode=22' \
-        + '?limit=500'
+        + '?game_mode=22'
     
     r = requests.get(url)
     data = json.loads(r.text)
@@ -105,8 +106,8 @@ match.match_id
 match.data
 
 # Extract data for each player
-matches = get_player_matches(account_id='208812212') # mh
-# matches = get_player_matches(account_id='156306162') # shiri
+# matches = get_player_matches(account_id='208812212') # mh
+matches = get_player_matches(account_id='156306162') # shiri
 # matches = get_player_matches(account_id='1075655293') # bacon
 # matches = get_player_matches(account_id='152471066') # mo
 # matches = get_player_matches(account_id='1075592541') # bottle
@@ -125,8 +126,12 @@ matches = get_player_matches(account_id='208812212') # mh
     .assign(team=lambda x: np.where(x['player_slot'] <= 5, 'radiant', 'dire'),
             win=lambda x: np.where(x['team'] == 'radiant', x['radiant_win'], x['radiant_win'] == False))
     .drop(columns=[
-        'id', 'hero_id', 'game_mode', 
-        'lobby_type', 'leaver_status', 'skill',
+        'id', 
+        'hero_id', 
+        'game_mode', 
+        'lobby_type', 
+        'leaver_status', 
+        'skill',
         'player_slot', # used to merge other match data
         'radiant_win', 'version'
         ])

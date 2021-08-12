@@ -2,8 +2,6 @@ import requests
 import json
 import pandas as pd
 
-key = open('keys.txt', 'r').read()
-
 host_name = 'https://api.opendota.com/api/'
 
 api_key = '?api_key=' + key
@@ -33,7 +31,14 @@ df
 
 df.to_csv('data/data.csv')
 
+# Get all the matches, given an ID
 
+
+# Heroes
+url = host_name + 'heroes'
+heroes = requests.get(url)
+heroes = json.loads(heroes.text)
+pd.DataFrame(heroes)
 
 
 def get_matches(account_id):
@@ -62,4 +67,10 @@ def update_data():
     
 
 
+if __name__ == '__main__':
     
+    ids = pd.read_csv('data/player_ids.csv')
+    
+    api_key = open('keys.txt', 'r').read()
+    
+    host_name = 'https://api.opendota.com/api/'

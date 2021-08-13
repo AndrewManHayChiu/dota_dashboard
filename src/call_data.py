@@ -56,8 +56,8 @@ def get_match(match_id, api_key=api_key):
     return(data)
 
 # test
-match = get_match(match_id=6130305670)
-match
+# match = get_match(match_id=6130305670)
+# match
 
 def extract_match_player_stats(data):
     
@@ -84,8 +84,8 @@ def extract_match_player_stats(data):
     return(df)
 
 # test
-test = extract_match_player_stats(match['players'][0])
-test
+# test = extract_match_player_stats(match['players'][0])
+# test
 
 def extract_all_match_player_stats(match_id):
     
@@ -100,8 +100,8 @@ def extract_all_match_player_stats(match_id):
     return(df)
 
 # test
-match_data = extract_all_match_player_stats(match_id=6130305670) 
-match_data
+# match_data = extract_all_match_player_stats(match_id=6130305670) 
+# match_data
 
 def get_data(account_id):
     matches = get_player_matches(account_id)
@@ -146,8 +146,8 @@ def get_data(account_id):
     return(matches)
 
 # test
-matches_df = get_data(account_ids['id'][0])
-matches_df
+# matches_df = get_data(account_ids['id'][0])
+# matches_df
 
 # Try joining matches_df and match_data
 matches_df.merge(match_data, how='left')
@@ -160,7 +160,8 @@ def get_and_save_data(account_id, alias):
     location = '../data/matches_' + alias + '.csv'
     matches_df.to_csv(location, index=False)
 
-get_and_save_data(account_ids['id'][7], account_ids['name'][7])
+i = 5
+get_and_save_data(account_ids['id'][i], account_ids['name'][i])
 
 # Get and save data for all account ids
 for i in range(account_ids.shape[0]):

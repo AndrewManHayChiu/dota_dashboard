@@ -15,6 +15,13 @@ def get_heroes():
 
 # Test
 # heroes = get_heroes()
+# pd.DataFrame(heroes).to_csv('../data/heroes.csv', index=False)
+
+def lane_role(lane_role):
+    if (lane_role == 0): return("unknown")
+    elif (lane_role == 1): return("safe")
+    elif (lane_role == 2): return("mid")
+    elif (lane_role == 3): return("off")
 
 # Get all the matches, given an ID
 def get_player_matches(account_id, api_key=api_key):
@@ -51,39 +58,55 @@ def get_match(match_id, api_key=api_key):
 # test
 match = get_match(match_id=6130305670)
 match
-match['lobby_type']
-match['patch']
-match['region']
 
-# Data within each player
-match['players']
-match['players'][0]['match_id']
-match['players'][0]['player_slot']
-match['players'][0]['account_id']
-match['players'][0]['lane']
-match['players'][0]['lane_role']
-match['players'][0]['win'] # Another way to determine win/loss
-match['players'][0]['lose'] # Another way to determine win/loss
+def extract_match_player_stats(data):
+    
+    # data = match['players'][player]
+    
+    df = pd.DataFrame({
+        'match_id': [data['match_id']],
+        'account_id': [data['account_id']],
+        'damage_taken': [data['damage_taken']],
+        'denies': [data['denies']],
+        'hero_damage': [data['hero_damage']],
+        'hero_healing': [data['hero_healing']],
+        'lane': [data['lane']],
+        'lane_role': [data['lane_role']],
+        'last_hits': [data['last_hits']],
+        'player_slot': [data['player_slot']],
+        'tower_damage': [data['tower_damage']],
+        'win': [data['win']],
+        'xp_per_min': [data['xp_per_min']],
+        })
+    
+    df['lane_role'] = df['lane_role'].apply(lambda x: lane_role(x))
+    
+    return(df)
 
-def extract_match_player_stats(match, player=0):
-    
-    match_player_data = match['players'][player]
-    
+# test
+test = extract_match_player_stats(match['players'][0])
+test
 
-class Match:
-    '''Match class'''
+def extract_all_match_player_stats(match_id):
     
-    def __init__(self, match_id):
-        self.match_id = match_id
-        self.data = get_match(self.match_id)
+    match = get_match(match_id)
     
+    df = pd.DataFrame()
     
-match = Match(6130305670)
-match.match_id
-match.data
+    for i in range(6):
+        player_stats = extract_match_player_stats(match['players'][i])
+        df = df.append(player_stats)
+    
+    return(df)
+
+# test
+match_data = extract_all_match_player_stats(match_id=6130305670) 
+match_data
 
 def get_data(account_id):
     matches = get_player_matches(account_id)
+    
+    # matches['account_id'] = account_id # for joining additional match data
     
     matches = (
         pd.DataFrame(matches)
@@ -118,16 +141,17 @@ def get_data(account_id):
     )
     
     matches['win'] = matches['win'].apply(lambda x: int(x))
+    matches['account_id'] = account_id
     
     return(matches)
 
 # test
-matches_df = get_data(account_ids['id'][1])
+matches_df = get_data(account_ids['id'][0])
 matches_df
-# matches_df['party_size'].value_counts()
-# matches_df.ranked.value_counts()
-# matches_df['win'].value_counts()
-matches_df['game_mode'].value_counts()
+
+# Try joining matches_df and match_data
+matches_df.merge(match_data, how='left')
+
 
 def get_and_save_data(account_id, alias):
     
@@ -136,19 +160,23 @@ def get_and_save_data(account_id, alias):
     location = '../data/matches_' + alias + '.csv'
     matches_df.to_csv(location, index=False)
 
+get_and_save_data(account_ids['id'][7], account_ids['name'][7])
+
 # Get and save data for all account ids
 for i in range(account_ids.shape[0]):
     get_and_save_data(account_ids['id'][i], account_ids['name'][i])
 
-
-def lane_role(lane_role):
-    if (lane_role == 0): return("unknown")
-    elif (lane_role == 1): return("safe")
-    elif (lane_role == 2): return("mid")
-    elif (lane_role == 3): return("off")
-
-# Test
-# lane_role(lane_role=1)
+class Match:
+    '''Match class'''
+    
+    def __init__(self, match_id):
+        self.match_id = match_id
+        self.data = get_match(self.match_id)
+    
+    
+match = Match(6130305670)
+match.match_id
+match.data
 
 if __name__ == '__main__':
     
@@ -160,4 +188,4 @@ if __name__ == '__main__':
     
     host_name = 'https://api.opendota.com/api/'
     
-    heroes = get_heroes()
+    heroes = get_heroes()|

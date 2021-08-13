@@ -3,35 +3,7 @@ import json
 import pandas as pd
 import numpy as np
 
-player_ids = pd.read_csv('../data/player_ids.csv')
-
-# api_key = '?api_key=' + key
-
-# end_path = 'players/208812212/'
-
-# url = host_name + end_path + api_key
-
-# url
-
-# response = requests.get(url)
-
-# response
-
-# response.text
-
-# pretty_json = json.loads(response.text)
-# print(json.dumps(pretty_json, indent=4))
-
-# url = host_name + end_path + 'matches/' + api_key
-
-# r = requests.get(url)
-# matches_data = json.loads(r.text)
-
-# df = pd.DataFrame(matches_data)
-# df
-
-# df.to_csv('data/data.csv')
-
+account_ids = pd.read_csv('../data/account_ids.csv')
 
 # Heroes
 # Should run only once; placed in __name__
@@ -79,6 +51,11 @@ def get_match(match_id, api_key=api_key):
 # test
 match = get_match(match_id=6130305670)
 match
+match['lobby_type']
+match['patch']
+match['region']
+
+# Data within each player
 match['players']
 match['players'][0]['match_id']
 match['players'][0]['player_slot']
@@ -86,7 +63,12 @@ match['players'][0]['account_id']
 match['players'][0]['lane']
 match['players'][0]['lane_role']
 match['players'][0]['win'] # Another way to determine win/loss
-match['players'][0]['lose']
+match['players'][0]['lose'] # Another way to determine win/loss
+
+def extract_match_player_stats(match, player=0):
+    
+    match_player_data = match['players'][player]
+    
 
 class Match:
     '''Match class'''
@@ -110,7 +92,7 @@ def get_data(account_id):
             left_on='hero_id', 
             right_on='id'
             )
-        .query('game_mode == 22 | game_mode == 1')
+        .query('game_mode == 22 | game_mode == 1 | game_mode == 23')
         .rename(columns={'localized_name': 'hero'})
         .sort_values(['start_time'])
         .assign(team=lambda x: np.where(x['player_slot'] <= 5, 'radiant', 'dire'),
@@ -126,7 +108,7 @@ def get_data(account_id):
         .drop(columns=[
             'id', 
             'hero_id', 
-            'game_mode', 
+            # 'game_mode', 
             'lobby_type', 
             'leaver_status', 
             'skill',
@@ -140,11 +122,12 @@ def get_data(account_id):
     return(matches)
 
 # test
-# matches_df = get_data(account_ids['id'][1])
-# matches_df
+matches_df = get_data(account_ids['id'][1])
+matches_df
 # matches_df['party_size'].value_counts()
 # matches_df.ranked.value_counts()
 # matches_df['win'].value_counts()
+matches_df['game_mode'].value_counts()
 
 def get_and_save_data(account_id, alias):
     

@@ -53,13 +53,15 @@ def get_player_matches(account_id, api_key=api_key):
         + str(account_id) \
         + '/matches/' \
         + '?api_key=' \
-        + api_key \
-        + '?game_mode=22'
+        + api_key
     
     r = requests.get(url)
     data = json.loads(r.text)
     
     return(data)
+
+# test = get_player_matches(account_id=account_id)
+# test
 
 # Match data should only be called once, especially when in a party
 def get_match(match_id, api_key=api_key):
@@ -108,10 +110,12 @@ def get_data(account_id):
             left_on='hero_id', 
             right_on='id'
             )
+        .query('game_mode == 22 | game_mode == 1')
         .rename(columns={'localized_name': 'hero'})
         .sort_values(['start_time'])
         .assign(team=lambda x: np.where(x['player_slot'] <= 5, 'radiant', 'dire'),
-                win=lambda x: np.where(x['team'] == 'radiant', x['radiant_win'], x['radiant_win'] == False))
+                win=lambda x: np.where(x['team'] == 'radiant', x['radiant_win'], x['radiant_win'] == False),
+                ranked=lambda x: np.where(x['lobby_type'] == 7, 1, 0))
         .assign(avg_win_rate_20=lambda x: x['win'].rolling(window=20).mean(),
                 avg_kills_20=lambda x: x['kills'].rolling(window=20).mean(),
                 avg_deaths_20=lambda x: x['deaths'].rolling(window=20).mean(),
@@ -131,10 +135,16 @@ def get_data(account_id):
             ])
     )
     
+    matches['win'] = matches['win'].apply(lambda x: int(x))
+    
     return(matches)
 
 # test
-# matches_df = get_data(account_ids['id'][0])
+# matches_df = get_data(account_ids['id'][1])
+# matches_df
+# matches_df['party_size'].value_counts()
+# matches_df.ranked.value_counts()
+# matches_df['win'].value_counts()
 
 def get_and_save_data(account_id, alias):
     

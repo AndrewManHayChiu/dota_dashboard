@@ -19,3 +19,14 @@ To analyse data from historical games of the jizzcrew members, playing solo or t
 
 ## Where to direct your questions
 @AndrewManHayChiu and @VomKing. 
+
+## FAQs
+* Why is this so shit? 
+
+    *Go fuck yourself.*
+* Why don't we just use Open Dota instead?
+
+    *Why don't you go fuck yourself.*
+* I have a complaint, I want to speak to the manager.
+ 
+    *Sorry, out of fucks to give.*

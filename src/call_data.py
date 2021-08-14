@@ -3,6 +3,8 @@ import json
 import pandas as pd
 import numpy as np
 
+api_key = open('../keys.txt', 'r').read()
+
 account_ids = pd.read_csv('../data/account_ids.csv')
 
 # Heroes
@@ -42,7 +44,11 @@ def get_player_matches(account_id, api_key=api_key):
 # test = get_player_matches(account_id=account_id)
 # test
 
-# Match data should only be called once, especially when in a party
+# The match api call has all the data about individual matches.
+# Note: Match data should only be called once due to call limits
+#       so maybe create a list of unique match_ids
+#       and slowly loop through each match_id to extract
+#       match and player statistics
 def get_match(match_id, api_key=api_key):
     url = host_name \
         + 'matches/' \
@@ -59,9 +65,9 @@ def get_match(match_id, api_key=api_key):
 # match = get_match(match_id=6130305670)
 # match
 
+# Additional player stats are contained within the match data
+# extracted using the get_match function
 def extract_match_player_stats(data):
-    
-    # data = match['players'][player]
     
     df = pd.DataFrame({
         'match_id': [data['match_id']],
@@ -84,9 +90,10 @@ def extract_match_player_stats(data):
     return(df)
 
 # test
-# test = extract_match_player_stats(match['players'][0])
-# test
+# extract_match_player_stats(match['players'][0])
 
+# Use extract_match_player_stats function to extract
+# data from all 6 players within a match_id
 def extract_all_match_player_stats(match_id):
     
     match = get_match(match_id)
@@ -102,6 +109,7 @@ def extract_all_match_player_stats(match_id):
 # test
 # match_data = extract_all_match_player_stats(match_id=6130305670) 
 # match_data
+
 
 def get_data(account_id):
     matches = get_player_matches(account_id)
@@ -150,7 +158,7 @@ def get_data(account_id):
 # matches_df
 
 # Try joining matches_df and match_data
-matches_df.merge(match_data, how='left')
+# matches_df.merge(match_data, how='left')
 
 
 def get_and_save_data(account_id, alias):
@@ -160,12 +168,12 @@ def get_and_save_data(account_id, alias):
     location = '../data/matches_' + alias + '.csv'
     matches_df.to_csv(location, index=False)
 
-i = 5
-get_and_save_data(account_ids['id'][i], account_ids['name'][i])
+# i = 5
+# get_and_save_data(account_ids['id'][i], account_ids['name'][i])
 
 # Get and save data for all account ids
-for i in range(account_ids.shape[0]):
-    get_and_save_data(account_ids['id'][i], account_ids['name'][i])
+# for i in range(account_ids.shape[0]):
+#     get_and_save_data(account_ids['id'][i], account_ids['name'][i])
 
 class Match:
     '''Match class'''
@@ -175,9 +183,9 @@ class Match:
         self.data = get_match(self.match_id)
     
     
-match = Match(6130305670)
-match.match_id
-match.data
+# match = Match(6130305670)
+# match.match_id
+# match.data
 
 if __name__ == '__main__':
     
@@ -189,4 +197,4 @@ if __name__ == '__main__':
     
     host_name = 'https://api.opendota.com/api/'
     
-    heroes = get_heroes()|
+    heroes = get_heroes()

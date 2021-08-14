@@ -40,13 +40,12 @@ d[match_ids[0]] = match_0
 d[match_ids[1]] = match_1
 # d
 
-for i in range(1000, 2000):
+for i in range(0, 60): 
     print(i)
     d[match_ids[i]] = get_match(match_id=match_ids[i])
     time.sleep(1) # sleep 1 second to ensure max 60 calls / minute
 
 len(d)
-d
 
 # 4. save to file
 

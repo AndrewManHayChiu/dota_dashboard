@@ -3,22 +3,32 @@ Dashboard for the jizzcrew interested in statistics from Dota
 
 ## Meet the jizzcrew
 
-Role | Player
------ | -----
-Pos 1 | Chen, ManHay
-Pos 2 | Jimmy, Chen
-Pos 3 | Euge, Catboss, Manhay, Chen, Teri
-Pos 4 | Antho, Teri, Manhay, Catboss
-Pos 5 | Antho, Teri
+Role  | Player | Hereoes
+----- | ------ | --------|
+Pos 1 | Chen, ManHay | Ursa, PL
+Pos 2 | Jimmy, Chen | Zeus, Hoodwink, QoP
+Pos 3 | Euge, Catboss, ManHay, Chen, Teri | Aba, CK, BH, Timber
+Pos 4 | Antho, Teri, ManHay, Catboss | Lich, BH, Aba, CM, Dazzle, SS, Lion, WD
+Pos 5 | Antho, Teri, ManHay | Lich, CM, Dazzle, SS, Lion, WD
 
 ## Goals for this dashboard
-To analyse data from historical games of the jizzcrew members, playing solo or together, to provide insights into how each player may improve.
+To analyse data from historical games of the jizzcrew members, 
+playing solo or together, 
+to provide insights into how each player may improve.
+
+## Contributing
+The easiest way to contribute is to go to the Issues page and have a look around.
+
+For non-coders, add recommendations, feature requests and bugs on the Issues page.
+
+For the more technical guys, create a branch and away you go!
 
 ## How to make the most of this dashboard
 [Placeholder]
 
 ## Where to direct your questions
-@AndrewManHayChiu and @VomKing. 
+[@AndrewManHayChiu](https://github.com/AndrewManHayChiu) 
+and [@VomKing](https://github.com/VomKing).
 
 ## FAQs
 * Why is this so shit? 

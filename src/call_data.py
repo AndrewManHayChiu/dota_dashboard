@@ -10,7 +10,7 @@ account_ids = pd.read_csv('../data/account_ids.csv')
 # Heroes
 # Should run only once; placed in __name__
 def get_heroes():
-    url = host_name + 'heroes'
+    url = 'https://api.opendota.com/api/' + 'heroes'
     r = requests.get(url)
     heroes = json.loads(r.text)
     return(heroes)
@@ -29,7 +29,7 @@ def lane_role(lane_role):
 def get_player_matches(account_id, api_key=api_key):
     # Gets only all-pick matches (game_mode=22)
         
-    url = host_name \
+    url = 'https://api.opendota.com/api/' \
         + 'players/' \
         + str(account_id) \
         + '/matches/' \
@@ -50,7 +50,7 @@ def get_player_matches(account_id, api_key=api_key):
 #       and slowly loop through each match_id to extract
 #       match and player statistics
 def get_match(match_id, api_key=api_key):
-    url = host_name \
+    url = 'https://api.opendota.com/api/' \
         + 'matches/' \
         + str(match_id) \
         + '?api_key=' \
@@ -76,13 +76,17 @@ def extract_match_player_stats(data):
         'denies': [data['denies']],
         'hero_damage': [data['hero_damage']],
         'hero_healing': [data['hero_healing']],
-        'lane': [data['lane']],
+        'lane': [data['lane_pos']],
         'lane_role': [data['lane_role']],
         'last_hits': [data['last_hits']],
         'player_slot': [data['player_slot']],
         'tower_damage': [data['tower_damage']],
         'win': [data['win']],
         'xp_per_min': [data['xp_per_min']],
+        'total_gold': [data['total_gold']],
+        'total_xp': [data['total_xp']],
+        'kda': [data['kda']],
+        
         })
     
     df['lane_role'] = df['lane_role'].apply(lambda x: lane_role(x))
@@ -94,24 +98,17 @@ def extract_match_player_stats(data):
 
 # Use extract_match_player_stats function to extract
 # data from all 6 players within a match_id
-def extract_all_match_player_stats(match_id):
-    
-    match = get_match(match_id)
+def extract_all_match_player_stats(match_data):
     
     df = pd.DataFrame()
     
     for i in range(6):
-        player_stats = extract_match_player_stats(match['players'][i])
+        player_stats = extract_match_player_stats(match_data['players'][i])
         df = df.append(player_stats)
     
     return(df)
 
-# test
-# match_data = extract_all_match_player_stats(match_id=6130305670) 
-# match_data
-
-
-def get_data(account_id):
+def get_data(account_id, heroes):
     matches = get_player_matches(account_id)
     
     # matches['account_id'] = account_id # for joining additional match data

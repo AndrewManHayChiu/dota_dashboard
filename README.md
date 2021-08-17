@@ -3,13 +3,13 @@ Dashboard for the jizzcrew interested in statistics from Dota
 
 ## Meet the jizzcrew
 
-Role  | Player | Hereoes
+Role  | Player | Heroes
 ----- | ------ | --------|
-Pos 1 | Chen, ManHay | Ursa, PL
-Pos 2 | Jimmy, Chen | Zeus, Hoodwink, QoP
-Pos 3 | Euge, Catboss, ManHay, Chen, Teri | Aba, CK, BH, Timber
-Pos 4 | Antho, Teri, ManHay, Catboss | Lich, BH, Aba, CM, Dazzle, SS, Lion, WD
-Pos 5 | Antho, Teri, ManHay | Lich, CM, Dazzle, SS, Lion, WD
+Pos 1 | Chen, ManHay | Ursa, PL, Jugg, Void
+Pos 2 | Jimmy, Chen | Zeus, Hoodwink, QoP, BS
+Pos 3 | Euge, Catboss, ManHay, Chen, Teri | Aba, CK, BH, Timber, Underlord, Mars, Axe, LC
+Pos 4 | Antho, Teri, ManHay, Catboss | Lich, BH, Aba, CM, Dazzle, SS, Lion, WD, Silencer
+Pos 5 | Antho, Teri, ManHay | Lich, CM, Dazzle, SS, Lion, WD, Silencer
 
 ## Goals for this dashboard
 To analyse data from historical games of the jizzcrew members, 
